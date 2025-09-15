@@ -25,8 +25,7 @@ class AttackCommand : public Command {
 public:
     ~AttackCommand() override {}
     DPErrorCode execute(Entity& e) override {
-        Player& p = dynamic_cast<Player&>(e);
-        p.attack();
+        e.attack();
         return DPErrorCode::SUCCESS;
     }
 };
