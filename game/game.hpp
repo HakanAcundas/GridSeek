@@ -2,10 +2,12 @@
 #include <array>
 #include <string>
 #include <stdlib.h>
+#include <memory>
 #include <glm/glm.hpp>
 #include "error.hpp"
 #include "entity/player.hpp"
 #include "entity/enemy.hpp"
+#include "map/tile.hpp"
 
 #define CLEARSCREEN system ( "cls" )
 
@@ -28,11 +30,11 @@ public:
     glm::vec2 get_map_vector()  { return glm::vec2(MAP_HEIGHT, MAP_WIDTH); }
 
     // Setters
-    void set_running() {running = !running; }
+    void set_running() { running = !running; }
 
 private:
     bool running = false;
-    std::array<std::array<char, MAP_WIDTH>, MAP_HEIGHT> map;
-    
     Player player;
+
+    std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT> map;
 };

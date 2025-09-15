@@ -1,9 +1,12 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <random>
 #include "game.hpp"
 #include "command.hpp"
 #include "input.hpp"
+#include "map/forest_tile.hpp"
+#include "map/snow_tile.hpp"
 
 using namespace input;
 
@@ -12,10 +15,22 @@ Game::Game() {
 }
 
 DPErrorCode Game::init() {
-    // TODO: Random (seed based) tile generation (forest, snowy, river).    
+    // Random device and distribution.
+    std::random_device rdevice;
+    std::mt19937 rng(rdevice());
+    std::uniform_int_distribution<std::mt19937::result_type> dist3(1,2);
+
+    // Filling map model.
     for (int column = 0; column < MAP_HEIGHT; column++) {
         for (int row = 0; row < MAP_WIDTH; row++) {
-            map.at(column).at(row) = '_';
+            unsigned int random_tile = dist3(rng);
+            switch (random_tile)
+            {
+                case 1: map.at(column).at(row) = std::make_unique<ForestTile>(glm::vec2(row, column));
+                break;
+                case 2: map.at(column).at(row) = std::make_unique<SnowTile>(glm::vec2(row, column));
+                break;
+            }
         }
     }
 
@@ -40,7 +55,7 @@ DPErrorCode Game::print_map() {
                 std::cout << 'T';
                 continue;
             }
-            std::cout << map.at(column).at(row);
+            map.at(column).at(row)->draw();
         }
         std::cout << "\n";
     }
@@ -56,7 +71,6 @@ void Game::run() {
         if (command) {
             command->execute(player);
         }
-
         print_map();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }

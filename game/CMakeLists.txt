@@ -12,7 +12,9 @@ FetchContent_MakeAvailable(glm)
 add_library(gamelib 
     game.cpp
     entity/player.cpp
-    entity/enemy.cpp)
+    entity/enemy.cpp
+    map/forest_tile.cpp
+    map/snow_tile.cpp)
 
 target_link_libraries(gamelib glm::glm)
 target_include_directories(gamelib PUBLIC ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}/entity)
