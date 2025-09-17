@@ -2,5 +2,6 @@
 // Application error codes
 enum struct DPErrorCode {
     SUCCESS,
-    BAD_MAP_TILE_ERROR
+    MAP_GENERATION_ERROR,
+    INPUT_BINDING_ERROR
 };

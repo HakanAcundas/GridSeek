@@ -21,7 +21,9 @@ public:
 
     DPErrorCode init();
     void run();
+    DPErrorCode genarate_map();
     DPErrorCode print_map();
+    DPErrorCode bind_input();
 
     // Getters
     bool is_running()           { return running; } 
