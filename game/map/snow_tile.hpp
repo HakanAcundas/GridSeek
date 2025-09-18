@@ -3,8 +3,8 @@
 
 class SnowTile : public Tile {
 public:
-    SnowTile(glm::vec2 coordinate) :  Tile(TileType::Snow), coord(coordinate) {};
-    SnowTile(int x, int y) :  Tile(TileType::Snow), coord(glm::vec2(x, y)) {};
+    SnowTile(glm::vec2 coordinate);
+    SnowTile(int x, int y);
     void draw() override;
 
     // getters and setters

@@ -11,6 +11,7 @@ class Tile {
 public:
     Tile() : ttype(TileType::Forest) {}
     Tile(TileType type) : ttype(type) {}
+    Tile(TileType type, int movement_cost) : ttype(type), movement_cost(movement_cost) {}
     ~Tile() {}
     virtual void draw() = 0;
 
@@ -21,5 +22,5 @@ public:
     void set_movement_cost(int new_mcost) { movement_cost = new_mcost; }
 protected:
     TileType ttype;
-    int movement_cost = 1;
+    int movement_cost;
 };

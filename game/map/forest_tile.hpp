@@ -3,8 +3,8 @@
 
 class ForestTile : public Tile {
 public:
-    ForestTile(glm::vec2 coordinate) : Tile(TileType::Forest), coord(coordinate) {};
-    ForestTile(int x, int y) : Tile(TileType::Forest), coord(glm::vec2(x, y)) {};
+    ForestTile(glm::vec2 coordinate);
+    ForestTile(int x, int y);
     void draw() override;
 
     // getters and setters

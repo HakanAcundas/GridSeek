@@ -26,7 +26,7 @@ public:
     DPErrorCode bind_input();
 
     // Getters
-    bool is_running()           { return running; } 
+    bool is_running()           { return running; }
     int get_map_height()        { return MAP_HEIGHT; }
     int get_map_widht()         { return MAP_WIDTH; }
     glm::vec2 get_map_vector()  { return glm::vec2(MAP_HEIGHT, MAP_WIDTH); }

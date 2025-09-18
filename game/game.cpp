@@ -107,6 +107,7 @@ DPErrorCode Game::print_map() {
                 continue;
             }
             map.at(column).at(row)->draw();
+            // std::cout << map.at(column).at(row)->get_movement_cost();
         }
         std::cout << "\n";
     }
@@ -127,6 +128,7 @@ DPErrorCode Game::bind_input() {
 
     return DPErrorCode::SUCCESS;
 }
+
 void Game::run() {
     set_running();
     while (is_running()) {
