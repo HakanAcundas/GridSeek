@@ -42,48 +42,48 @@ DPErrorCode Game::genarate_map() {
 
     try {
         while (remaining_height > 0) {
-        // Blob size distribution
-        std::uniform_int_distribution<std::mt19937::result_type> dist_blob_size(2, 5);
+            // Blob size distribution
+            std::uniform_int_distribution<std::mt19937::result_type> dist_blob_size(2, 5);
 
-        // Choose a random blob height
-        unsigned int blob_height = dist_blob_size(rng);
-        if (blob_height > remaining_height) {
-            blob_height = remaining_height;
-        }
-
-        // Reset X for each new row section
-        remaining_width = MAP_WIDTH;
-        startX = 0;
-
-        while (remaining_width > 0) {
-            // Choose a random blob width
-            unsigned int blob_width = dist_blob_size(rng);
-            if (blob_width > remaining_width) {
-                blob_width = remaining_width;
+            // Choose a random blob height
+            unsigned int blob_height = dist_blob_size(rng);
+            if (blob_height > remaining_height) {
+                blob_height = remaining_height;
             }
 
-            unsigned int blob_type = dist_tile(rng);
-            // Fill the blob
-            for (unsigned int row = 0; row < blob_height; ++row) {
-                for (unsigned int col = 0; col < blob_width; ++col) {
-                    unsigned int x = startX + col;
-                    unsigned int y = startY + row;
+            // Reset X for each new row section
+            remaining_width = MAP_WIDTH;
+            startX = 0;
 
-                    switch (blob_type) {
-                        case 1:
-                            map.at(y).at(x) = std::make_unique<ForestTile>(glm::vec2(x, y));
-                            break;
-                        case 2:
-                            map.at(y).at(x) = std::make_unique<SnowTile>(glm::vec2(x, y));
-                            break;
+            while (remaining_width > 0) {
+                // Choose a random blob width
+                unsigned int blob_width = dist_blob_size(rng);
+                if (blob_width > remaining_width) {
+                    blob_width = remaining_width;
+                }
+
+                unsigned int blob_type = dist_tile(rng);
+                // Fill the blob
+                for (unsigned int row = 0; row < blob_height; ++row) {
+                    for (unsigned int col = 0; col < blob_width; ++col) {
+                        unsigned int x = startX + col;
+                        unsigned int y = startY + row;
+
+                        switch (blob_type) {
+                            case 1:
+                                map.at(y).at(x) = std::make_unique<ForestTile>(glm::vec2(x, y));
+                                break;
+                            case 2:
+                                map.at(y).at(x) = std::make_unique<SnowTile>(glm::vec2(x, y));
+                                break;
+                        }
                     }
                 }
-            }
 
-            // Move right for the next blob
-            startX += blob_width;
-            remaining_width -= blob_width;
-        }
+                // Move right for the next blob
+                startX += blob_width;
+                remaining_width -= blob_width;
+            }
 
             // Move down for the next row of blobs
             startY += blob_height;
@@ -94,6 +94,7 @@ DPErrorCode Game::genarate_map() {
         "Unable to bind keyboard commands!"; 
         return DPErrorCode::MAP_GENERATION_ERROR;
     }
+    
     return DPErrorCode::SUCCESS;
 }
 
