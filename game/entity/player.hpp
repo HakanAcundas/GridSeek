@@ -14,7 +14,9 @@ public:
 
     void move(glm::vec2 direction) override;
     void attack() override;
+    void draw();
 private:
     glm::vec2 speed;
     int jump_power;
+    const char* texture = "P";
 };

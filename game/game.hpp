@@ -1,12 +1,13 @@
 #pragma once
 #include <array>
+#include <vector>
 #include <string>
 #include <stdlib.h>
 #include <memory>
 #include <glm/glm.hpp>
 #include "error.hpp"
 #include "entity/player.hpp"
-#include "entity/enemy.hpp"
+#include "entity/target.hpp"
 #include "map/tile.hpp"
 
 #define CLEARSCREEN system ( "cls" )
@@ -37,6 +38,7 @@ public:
 private:
     bool running = false;
     Player player;
+    std::vector<Target> targets;
 
     std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT> map;
 };

@@ -101,10 +101,17 @@ DPErrorCode Game::genarate_map() {
 DPErrorCode Game::print_map() {
 
     for (int column = 0; column < MAP_HEIGHT; column++) {
-        for (int row =0; row < MAP_WIDTH; row++) {
+        for (int row = 0; row < MAP_WIDTH; row++) {
             if (player.get_position() == glm::vec2(column, row)) {
-                std::cout << 'T';
+                player.draw();
                 continue;
+            }
+            
+            for (Target target : targets) {
+                glm::vec2 target_pos = target.get_position();
+                if (target_pos == glm::vec2(column, row)) {
+                    target.draw();
+                }
             }
             map.at(column).at(row)->draw();
             // std::cout << map.at(column).at(row)->get_movement_cost();

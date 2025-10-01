@@ -12,7 +12,7 @@ FetchContent_MakeAvailable(glm)
 add_library(gamelib 
     game.cpp
     entity/player.cpp
-    entity/enemy.cpp
+    entity/target.cpp
     map/forest_tile.cpp
     map/snow_tile.cpp)
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Windows.h>
 #include "player.hpp"
 
 Player::Player() {
@@ -14,6 +15,13 @@ Player::Player(int posX, int posY) {
 }
 
 Player::~Player() {}
+
+void Player::draw() {
+    HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hc, 0x02);
+    std::cout << texture;
+    SetConsoleTextAttribute(hc, 0x07);
+}
 
 void Player::move(glm::vec2 direction) {
     position += direction;
