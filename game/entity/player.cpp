@@ -18,7 +18,7 @@ Player::~Player() {}
 
 void Player::draw() {
     HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hc, 0x02);
+    SetConsoleTextAttribute(hc, 0x06);
     std::cout << texture;
     SetConsoleTextAttribute(hc, 0x07);
 }
