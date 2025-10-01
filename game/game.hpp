@@ -23,6 +23,7 @@ public:
     DPErrorCode init();
     void run();
     DPErrorCode genarate_map();
+    DPErrorCode create_target();
     DPErrorCode print_map();
     DPErrorCode bind_input();
 

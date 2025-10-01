@@ -19,7 +19,7 @@ void Target::attack() {
 
 void Target::draw() {
     HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hc, 0x02);
+    SetConsoleTextAttribute(hc, 0x04);
     std::cout << texture;
     SetConsoleTextAttribute(hc, 0x07);
 }

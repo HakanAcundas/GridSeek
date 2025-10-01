@@ -25,6 +25,16 @@ DPErrorCode Game::init() {
         return code;
     }
 
+    
+    code = create_target();
+    code = create_target();
+    code = create_target();
+    code = create_target();
+    code = create_target();
+    if (code != DPErrorCode::SUCCESS) {
+        return code;
+    }
+
     return DPErrorCode::SUCCESS;
 }
 
@@ -95,6 +105,27 @@ DPErrorCode Game::genarate_map() {
         return DPErrorCode::MAP_GENERATION_ERROR;
     }
     
+    return DPErrorCode::SUCCESS;
+}
+
+DPErrorCode Game::create_target() {
+    // TODO: Set maximum number of target
+    // Random device and distribution.
+    std::random_device rdevice;
+    std::mt19937 rng(rdevice());
+    std::uniform_int_distribution<std::mt19937::result_type> rand_posx(0, MAP_HEIGHT);
+    std::uniform_int_distribution<std::mt19937::result_type> rand_posy(0, MAP_WIDTH);
+    
+    glm::vec2 position {rand_posx(rng), rand_posy(rng)};
+    for (int i = 0; i < targets.size(); i++) {
+        if (position == targets.at(i).get_position() && position == player.get_position()) { // Check if new position is overlapping any of the existing entity position.
+            position = glm::vec2(rand_posx(rng), rand_posy(rng)); // Set new position.
+            i = 0;
+        }
+    }
+    Target new_target(position.x, position.y);
+    targets.push_back(new_target);
+
     return DPErrorCode::SUCCESS;
 }
 
