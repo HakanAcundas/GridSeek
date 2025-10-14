@@ -4,7 +4,7 @@ project(DesignPatterns VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_subdirectory(game)
+add_subdirectory(src)
 
 add_executable(DesignPatternGame main.cpp)
 target_link_libraries(DesignPatternGame PRIVATE gamelib)
