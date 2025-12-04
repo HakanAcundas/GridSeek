@@ -14,7 +14,7 @@ add_library(gamelib
     entity/player.cpp
     entity/target.cpp
     map/forest_tile.cpp
-    map/snow_tile.cpp)
+    map/snow_tile.cpp "path_handler/path_handler.cpp")
 
 target_link_libraries(gamelib glm::glm)
 target_include_directories(gamelib PUBLIC ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}/entity)

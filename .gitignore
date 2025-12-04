@@ -1,8 +1,10 @@
-# vscode directory
+# vs and vscode directory
 .vscode/**
+.vs/**
 
 # build directory
 build/**
+out/**
 
 # Prerequisites
 *.d

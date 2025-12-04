@@ -2,11 +2,13 @@
 #include <thread>
 #include <chrono>
 #include <random>
+#include "../shared/global_settings.hpp"
 #include "game.hpp"
 #include "command.hpp"
 #include "input.hpp"
 #include "map/forest_tile.hpp"
 #include "map/snow_tile.hpp"
+#include "../path_handler/path_handler.hpp"
 
 using namespace input;
 
@@ -27,10 +29,10 @@ DPErrorCode Game::init() {
 
     
     code = create_target();
-    code = create_target();
-    code = create_target();
-    code = create_target();
-    code = create_target();
+    // code = create_target();
+    // code = create_target();
+    // code = create_target();
+    // code = create_target();
     if (code != DPErrorCode::SUCCESS) {
         return code;
     }
@@ -101,7 +103,7 @@ DPErrorCode Game::genarate_map() {
         }
     }
     catch(const std::exception& e) { 
-        "Unable to bind keyboard commands!"; 
+        "Unable to bind keyboard commands!";
         return DPErrorCode::MAP_GENERATION_ERROR;
     }
     
@@ -146,7 +148,6 @@ DPErrorCode Game::print_map() {
             }
             map.at(column).at(row)->draw();
             cnt:;
-            // std::cout << map.at(column).at(row)->get_movement_cost();
         }
         std::cout << "\n";
     }
@@ -169,13 +170,18 @@ DPErrorCode Game::bind_input() {
 }
 
 void Game::run() {
+    Memoization m;
+    std::cout << "Target location: " << targets.at(0).get_position().x << targets.at(0).get_position().y << "\n";
+    int cost = m.minCost(map, player.get_position(), targets.at(0).get_position());
+    std::cout << "Path cost is: " << cost << "\n";
+    
     set_running();
     while (is_running()) {
         Command *command = Input::get_instance().handle_input();
-        CLEARSCREEN;
         if (command) {
             command->execute(player);
         }
+        // CLEARSCREEN;
         print_map();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
