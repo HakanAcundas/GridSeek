@@ -10,7 +10,14 @@ ForestTile::ForestTile(int x, int y) : Tile(TileType::Forest, DEFAULT_FOREST_MOV
 
 void ForestTile::draw() {
     HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hc, 0x02);
+    if (is_path())
+    {
+        SetConsoleTextAttribute(hc, 0x93);
+    }
+    else
+    {
+        SetConsoleTextAttribute(hc, 0x02);
+    }
     std::cout << texture;
     SetConsoleTextAttribute(hc, 0x07);
 }

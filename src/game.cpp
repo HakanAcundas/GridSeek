@@ -146,7 +146,7 @@ DPErrorCode Game::print_map() {
                     goto cnt;
                 }
             }
-            map.at(column).at(row)->draw();
+            map[column][row]->draw();
             cnt:;
         }
         std::cout << "\n";
@@ -170,9 +170,9 @@ DPErrorCode Game::bind_input() {
 }
 
 void Game::run() {
-    Memoization m;
+    PathHandler ph;
     std::cout << "Target location: " << targets.at(0).get_position().x << targets.at(0).get_position().y << "\n";
-    int cost = m.minCost(map, player.get_position(), targets.at(0).get_position());
+    int cost = ph.minCost(map, player.get_position(), targets.at(0).get_position());
     std::cout << "Path cost is: " << cost << "\n";
     
     set_running();

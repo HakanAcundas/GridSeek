@@ -10,6 +10,13 @@ SnowTile::SnowTile(int x, int y) :  Tile(TileType::Snow, DEFAULT_SNOW_MOVEMENT_C
 
 void SnowTile::draw() {
     HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hc, 0x07);
+    if (is_path())
+    {
+        SetConsoleTextAttribute(hc, 0x93);
+    }
+    else
+    {
+        SetConsoleTextAttribute(hc, 0x07);
+    }
     std::cout << texture;
 }
