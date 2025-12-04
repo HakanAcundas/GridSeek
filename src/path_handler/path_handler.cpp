@@ -5,13 +5,8 @@ PathHandler::PathHandler()
 
 }
 
-int PathHandler::minCost(std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map, glm::vec2 start, glm::vec2 target)
+int PathHandler::dijkstra(std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map, glm::vec2 start, glm::vec2 target)
 {
-    int sx = static_cast<int>(start.x);
-    int sy = static_cast<int>(start.y);
-    int tx = static_cast<int>(target.x);
-    int ty = static_cast<int>(target.y);
-
     // Clear leftover PQ entries from previous calls
     pq = std::priority_queue<Node, std::vector<Node>, CompareCost>();
 
@@ -19,9 +14,9 @@ int PathHandler::minCost(std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>
     std::vector<std::shared_ptr<Tile>> touched;
 
     // Start with initial node
-    pq.push(Node(sx, sy, 0));
-    map[sx][sy]->set_path();
-    touched.push_back(map[sx][sy]);
+    pq.push(Node(start.x, start.y, 0));
+    map[start.x][start.y]->set_path();
+    touched.push_back(map[start.x][start.y]);
 
     int result_cost = -1;
 
@@ -32,7 +27,7 @@ int PathHandler::minCost(std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>
         pq.pop();
 
         // If we are on target
-        if (curr.row == tx && curr.col == ty)
+        if (curr.row == target.x && curr.col == target.y)
         {
             result_cost = curr.cost;
             break;

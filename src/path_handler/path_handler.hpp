@@ -12,7 +12,7 @@ class PathHandler
 {
 public:
     PathHandler();
-    int minCost(std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map, glm::vec2 start, glm::vec2 target);
+    int dijkstra(std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map, glm::vec2 start, glm::vec2 target);
 
     struct Node
     {
