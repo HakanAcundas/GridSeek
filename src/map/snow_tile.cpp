@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include "snow_tile.hpp"
 
-#define DEFAULT_SNOW_MOVEMENT_COST 3
+#define DEFAULT_SNOW_MOVEMENT_COST 15
 
 SnowTile::SnowTile(glm::vec2 coordinate) :  Tile(TileType::Snow, DEFAULT_SNOW_MOVEMENT_COST), coord(coordinate) {}
 

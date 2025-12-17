@@ -12,21 +12,27 @@ class PathHandler
 {
 public:
     PathHandler();
-    int dijkstra(std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map, glm::vec2 start, glm::vec2 target);
+    int dijkstra(std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map, glm::vec2 start, glm::vec2 target);
+    void rebuild_shortest_path(glm::vec2 start,
+        glm::vec2 target,
+        std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map);
 
     struct Node
     {
-        int row, col, cost;
-        Node(int r, int c, int co) : row(r), col(c), cost(co) {}
+        int x, y, cost;
+        bool touched = false;
+        Node(int x, int y, int co) : x(x), y(y), cost(co) {}
     };
 
     struct CompareCost
     {
-        bool operator()(const Node& n1, const Node& n2) const
+        bool operator()(Node& n1, Node& n2) const
         {
             return n1.cost > n2.cost; // min-heap
         }
     };
 private:
+    int dist[MAP_WIDTH][MAP_HEIGHT];
+    glm::ivec2 prev[MAP_WIDTH][MAP_HEIGHT];
     std::priority_queue<Node, std::vector<Node>, CompareCost> pq;
 };

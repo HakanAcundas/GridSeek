@@ -172,7 +172,7 @@ DPErrorCode Game::bind_input() {
 void Game::run() {
     PathHandler ph;
     std::cout << "Target location: " << targets.at(0).get_position().x << targets.at(0).get_position().y << "\n";
-    int cost = ph.minCost(map, player.get_position(), targets.at(0).get_position());
+    int cost = ph.dijkstra(map, player.get_position(), targets.at(0).get_position());
     std::cout << "Path cost is: " << cost << "\n";
     
     set_running();

@@ -29,7 +29,7 @@ public:
     bool is_running()           { return running; }
     int get_map_height()        { return MAP_HEIGHT; }
     int get_map_widht()         { return MAP_WIDTH; }
-    glm::vec2 get_map_vector()  { return glm::vec2(MAP_HEIGHT, MAP_WIDTH); }
+    glm::vec2 get_map_vector()  { return glm::vec2(MAP_WIDTH, MAP_HEIGHT); }
     std::vector<Target> get_targets()   { return targets; }
 
     // Setters
@@ -39,6 +39,5 @@ private:
     bool running = false;
     Player player;
     std::vector<Target> targets;
-
-    std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT> map;
+    std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT> map;
 };

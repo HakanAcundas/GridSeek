@@ -23,9 +23,13 @@ public:
     void set_path() { path_flag = !path_flag; }
     bool is_path() { return path_flag; }
     void reset_path() { path_flag = false; }
+    bool is_touched() { return touched_flag; }
+    void touch() { touched_flag = true; }
+    
 protected:
     int ID;
     TileType ttype;
     int movement_cost;
+    bool touched_flag = false;
     bool path_flag = false;
 };

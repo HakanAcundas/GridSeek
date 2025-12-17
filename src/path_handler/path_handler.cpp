@@ -5,74 +5,113 @@ PathHandler::PathHandler()
 
 }
 
-int PathHandler::dijkstra(std::array<std::array<std::shared_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map, glm::vec2 start, glm::vec2 target)
+int PathHandler::dijkstra(
+    std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map,
+    glm::vec2 start,
+    glm::vec2 target)
 {
-    // Clear leftover PQ entries from previous calls
+    // Clear priority queue
     pq = std::priority_queue<Node, std::vector<Node>, CompareCost>();
 
-    // Store visited tiles to reset later
-    std::vector<std::shared_ptr<Tile>> touched;
+    // Initialize dist & prev
+    for (int column = 0; column < MAP_HEIGHT; column++)
+    {
+        for (int row = 0; row < MAP_WIDTH; row++)
+        {
+            dist[column][row] = INT_MAX;
+            prev[column][row] = glm::ivec2(-1, -1);
+            map[column][row]->reset_path(); // important: clear old markings
+        }
+    }
 
-    // Start with initial node
-    pq.push(Node(start.x, start.y, 0));
-    map[start.x][start.y]->set_path();
-    touched.push_back(map[start.x][start.y]);
+    int sx = (int)start.x;
+    int sy = (int)start.y;
+    int tx = (int)target.x;
+    int ty = (int)target.y;
 
-    int result_cost = -1;
+    dist[sx][sy] = 0;
+    pq.push(Node(sx, sy, 0));
 
-    // Dijkstra loop
+    // Possible x and y directions
+    static const int drow[4] = { 1, -1, 0, 0 };
+    static const int dcol[4] = { 0, 0, 1, -1 };
+
     while (!pq.empty())
     {
         Node curr = pq.top();
         pq.pop();
 
-        // If we are on target
-        if (curr.row == target.x && curr.col == target.y)
-        {
-            result_cost = curr.cost;
-            break;
-        }
+        int x = curr.x;
+        int y = curr.y;
 
-        // Movement directions. Up, down, right, left
-        static const int drow[4] = { 1, -1, 0, 0 };
-        static const int dcol[4] = { 0, 0, 1, -1 };
+        // Skip outdated entries
+        if (curr.cost > dist[y][x])
+            continue;
+
+        // Exit if we reach the target
+        if (x == tx && y == ty)
+            break;
+
+        if (map[x][y]->is_touched())
+            continue;
+
+        map[x][y]->touch();
 
         for (int i = 0; i < 4; i++)
         {
-            // Next row and next column
-            int nrow = curr.row + drow[i];
-            int ncol = curr.col + dcol[i];
+            int nx = x + drow[i];
+            int ny = y + dcol[i];
 
-            // Row bound check
-            if (nrow < 0 || nrow >= MAP_WIDTH)
-            {
+            // Boundry check, since we can exit from map
+            if (nx < 0 || nx >= MAP_WIDTH ||
+                ny < 0 || ny >= MAP_HEIGHT)
                 continue;
-            }
 
-            // Column bound check
-            if (ncol < 0 || ncol >= MAP_HEIGHT)
+            int move_cost = map[ny][nx]->get_movement_cost();
+            int new_cost = dist[x][y] + move_cost;
+
+            if (new_cost < dist[nx][ny])
             {
-                continue;
+                dist[nx][ny] = new_cost;
+                prev[nx][ny] = glm::ivec2(x, y);
+                pq.push(Node(nx, ny, new_cost));
             }
-
-            // Get next tile
-            auto& tile = map[nrow][ncol];
-
-            // Check if tile is visited
-            if (tile->is_path())
-            {
-                continue;
-            }
-
-            int move_cost = tile->get_movement_cost();
-
-            pq.push(Node(nrow, ncol, curr.cost + move_cost));
-
-            // Mark as visited
-            tile->set_path();
-            touched.push_back(tile);
         }
     }
 
-    return result_cost;
+    // No path found
+    if (dist[tx][ty] == INT_MAX)
+        return -1;
+
+    rebuild_shortest_path(start, target, map);
+
+    return dist[tx][ty];
+}
+
+void PathHandler::rebuild_shortest_path(
+    glm::vec2 start,
+    glm::vec2 target,
+    std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map)
+{
+    int sx = (int)start.x;
+    int sy = (int)start.y;
+    int tx = (int)target.x;
+    int ty = (int)target.y;
+
+    int x = tx;
+    int y = ty;
+
+    while (!(x == sx && y == sy))
+    {
+        if (prev[x][y].x == -1)
+            break;
+
+        map[x][y]->set_path();
+
+        glm::ivec2 p = prev[x][y];
+        x = p.x;
+        y = p.y;
+    }
+
+    map[sx][sy]->set_path(); // mark start if desired
 }
