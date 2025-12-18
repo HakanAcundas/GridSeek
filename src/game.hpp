@@ -39,5 +39,5 @@ private:
     bool running = false;
     Player player;
     std::vector<Target> targets;
-    std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT> map;
+    std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH> map;
 };

@@ -6,7 +6,7 @@ PathHandler::PathHandler()
 }
 
 int PathHandler::dijkstra(
-    std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map,
+    std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map,
     glm::vec2 start,
     glm::vec2 target)
 {
@@ -18,9 +18,9 @@ int PathHandler::dijkstra(
     {
         for (int row = 0; row < MAP_WIDTH; row++)
         {
-            dist[column][row] = INT_MAX;
-            prev[column][row] = glm::ivec2(-1, -1);
-            map[column][row]->reset_path(); // important: clear old markings
+            dist[row][column] = INT_MAX;
+            prev[row][column] = glm::ivec2(-1, -1);
+            map[row][column]->reset_path(); // important: clear old markings
         }
     }
 
@@ -44,30 +44,27 @@ int PathHandler::dijkstra(
         int x = curr.x;
         int y = curr.y;
 
-        // Skip outdated entries
-        if (curr.cost > dist[y][x])
-            continue;
-
         // Exit if we reach the target
         if (x == tx && y == ty)
             break;
 
-        if (map[x][y]->is_touched())
+        // Check if we have shorter path cost
+        if (curr.cost > dist[x][y] || map[x][y]->is_touched())
             continue;
 
         map[x][y]->touch();
 
         for (int i = 0; i < 4; i++)
         {
+            // Next x and y
             int nx = x + drow[i];
             int ny = y + dcol[i];
 
-            // Boundry check, since we can exit from map
-            if (nx < 0 || nx >= MAP_WIDTH ||
-                ny < 0 || ny >= MAP_HEIGHT)
+            // Boundry check for next tile, since we might exit from map
+            if (nx < 0 || nx >= MAP_WIDTH || ny < 0 || ny >= MAP_HEIGHT)
                 continue;
 
-            int move_cost = map[ny][nx]->get_movement_cost();
+            int move_cost = map[nx][ny]->get_movement_cost();
             int new_cost = dist[x][y] + move_cost;
 
             if (new_cost < dist[nx][ny])
@@ -91,7 +88,7 @@ int PathHandler::dijkstra(
 void PathHandler::rebuild_shortest_path(
     glm::vec2 start,
     glm::vec2 target,
-    std::array<std::array<std::unique_ptr<Tile>, MAP_WIDTH>, MAP_HEIGHT>& map)
+    std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map)
 {
     int sx = (int)start.x;
     int sy = (int)start.y;

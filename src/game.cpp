@@ -46,8 +46,8 @@ DPErrorCode Game::genarate_map() {
     std::mt19937 rng(rdevice());
     std::uniform_int_distribution<std::mt19937::result_type> dist_tile(1,2);
 
-    unsigned int remaining_height = MAP_HEIGHT;
     unsigned int remaining_width  = MAP_WIDTH;
+    unsigned int remaining_height = MAP_HEIGHT;
 
     unsigned int startY = 0;  // where the current blob starts vertically
     unsigned int startX = 0;  // where the current blob starts horizontally
@@ -76,17 +76,17 @@ DPErrorCode Game::genarate_map() {
 
                 unsigned int blob_type = dist_tile(rng);
                 // Fill the blob
-                for (unsigned int row = 0; row < blob_height; ++row) {
-                    for (unsigned int col = 0; col < blob_width; ++col) {
-                        unsigned int x = startX + col;
-                        unsigned int y = startY + row;
+                for (unsigned int row = 0; row < blob_width; ++row) {
+                    for (unsigned int col = 0; col < blob_height; ++col) {
+                        unsigned int x = startX + row;
+                        unsigned int y = startY + col;
 
                         switch (blob_type) {
                             case 1:
-                                map.at(y).at(x) = std::make_unique<ForestTile>(glm::vec2(x, y));
+                                map.at(x).at(y) = std::make_unique<ForestTile>(glm::vec2(x, y));
                                 break;
                             case 2:
-                                map.at(y).at(x) = std::make_unique<SnowTile>(glm::vec2(x, y));
+                                map.at(x).at(y) = std::make_unique<SnowTile>(glm::vec2(x, y));
                                 break;
                         }
                     }
@@ -115,8 +115,8 @@ DPErrorCode Game::create_target() {
     // Random device and distribution.
     std::random_device rdevice;
     std::mt19937 rng(rdevice());
-    std::uniform_int_distribution<std::mt19937::result_type> rand_posx(0, MAP_HEIGHT);
-    std::uniform_int_distribution<std::mt19937::result_type> rand_posy(0, MAP_WIDTH);
+    std::uniform_int_distribution<std::mt19937::result_type> rand_posx(0, MAP_WIDTH);
+    std::uniform_int_distribution<std::mt19937::result_type> rand_posy(0, MAP_HEIGHT);
     
     glm::vec2 position {rand_posx(rng), rand_posy(rng)};
     for (int i = 0; i < targets.size(); i++) {
@@ -134,19 +134,19 @@ DPErrorCode Game::create_target() {
 DPErrorCode Game::print_map() {
     for (int column = 0; column < MAP_HEIGHT; column++) {
         for (int row = 0; row < MAP_WIDTH; row++) {
-            if (player.get_position() == glm::vec2(column, row)) {
+            if (player.get_position() == glm::vec2(row, column)) {
                 player.draw();
                 continue;
             }
             
             for (Target target : targets) {
                 glm::vec2 target_pos = target.get_position();
-                if (target_pos == glm::vec2(column, row)) {
+                if (target_pos == glm::vec2(row, column)) {
                     target.draw();
                     goto cnt;
                 }
             }
-            map[column][row]->draw();
+            map[row][column]->draw();
             cnt:;
         }
         std::cout << "\n";
@@ -171,7 +171,7 @@ DPErrorCode Game::bind_input() {
 
 void Game::run() {
     PathHandler ph;
-    std::cout << "Target location: " << targets.at(0).get_position().x << targets.at(0).get_position().y << "\n";
+    std::cout << "Target location: " << targets.at(0).get_position().x << ", " << targets.at(0).get_position().y << "\n";
     int cost = ph.dijkstra(map, player.get_position(), targets.at(0).get_position());
     std::cout << "Path cost is: " << cost << "\n";
     
