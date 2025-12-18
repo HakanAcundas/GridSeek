@@ -4,11 +4,12 @@
 
 #define DEFAULT_SNOW_MOVEMENT_COST 15
 
-SnowTile::SnowTile(glm::vec2 coordinate) :  Tile(TileType::Snow, DEFAULT_SNOW_MOVEMENT_COST), coord(coordinate) {}
+SnowTile::SnowTile(glm::ivec2 coordinate) :  Tile(TileType::Snow, DEFAULT_SNOW_MOVEMENT_COST), coord(coordinate) {}
 
-SnowTile::SnowTile(int x, int y) :  Tile(TileType::Snow, DEFAULT_SNOW_MOVEMENT_COST), coord(glm::vec2(x, y)) {}
+SnowTile::SnowTile(int x, int y) :  Tile(TileType::Snow, DEFAULT_SNOW_MOVEMENT_COST), coord(glm::ivec2(x, y)) {}
 
-void SnowTile::draw() {
+void SnowTile::draw()
+{
     HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);
     if (is_path())
     {

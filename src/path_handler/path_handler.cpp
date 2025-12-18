@@ -1,3 +1,4 @@
+#include <iostream>
 #include "path_handler.hpp"
 
 PathHandler::PathHandler()
@@ -5,95 +6,94 @@ PathHandler::PathHandler()
 
 }
 
-int PathHandler::dijkstra(
-    std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map,
-    glm::vec2 start,
-    glm::vec2 target)
+// Pseudocode: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Pseudocode
+int PathHandler::dijkstra(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map,
+    glm::ivec2 start, glm::ivec2 target)
 {
+    std::cout << "Dijkstra tries to find shortest path.\n";
     // Clear priority queue
     pq = std::priority_queue<Node, std::vector<Node>, CompareCost>();
-
-    // Initialize dist & prev
-    for (int column = 0; column < MAP_HEIGHT; column++)
-    {
-        for (int row = 0; row < MAP_WIDTH; row++)
-        {
-            dist[row][column] = INT_MAX;
-            prev[row][column] = glm::ivec2(-1, -1);
-            map[row][column]->reset_path(); // important: clear old markings
-        }
-    }
-
-    int sx = (int)start.x;
-    int sy = (int)start.y;
-    int tx = (int)target.x;
-    int ty = (int)target.y;
-
+    
+    int sx = start.x;
+    int sy = start.y;
+    int tx = target.x;
+    int ty = target.y;
     dist[sx][sy] = 0;
     pq.push(Node(sx, sy, 0));
 
-    // Possible x and y directions
-    static const int drow[4] = { 1, -1, 0, 0 };
-    static const int dcol[4] = { 0, 0, 1, -1 };
+    // Initilition of nodes
+    for (int x = 0; x < MAP_WIDTH; x++)
+    {
+        for (int y = 0; y < MAP_HEIGHT; y++)
+        {
+            if (x == sx && y == sy)
+                continue;
 
+            prev[x][y] = glm::ivec2(-1, -1);    // Undefined
+            dist[x][y] = INT_MAX;               // Mark as infinity, since we don't know the cost yet
+            map[x][y]->reset_path();
+        }
+    }
+
+    // Possible x, y directions
+    int dx[8] = { 1, -1, 0, 0, 1, 1, -1, -1};
+    int dy[8] = { 0, 0, 1, -1, 1, -1, 1, -1};
     while (!pq.empty())
     {
         Node curr = pq.top();
         pq.pop();
 
-        int x = curr.x;
-        int y = curr.y;
-
-        // Exit if we reach the target
-        if (x == tx && y == ty)
+        // If we are on target
+        if (curr.x == tx && curr.y == ty)
             break;
 
         // Check if we have shorter path cost
-        if (curr.cost > dist[x][y] || map[x][y]->is_touched())
+        if (curr.cost > dist[curr.x][curr.y] || map[curr.x][curr.y]->is_touched())
             continue;
 
-        map[x][y]->touch();
+        map[curr.x][curr.y]->touch();
 
-        for (int i = 0; i < 4; i++)
+        // Go through all possible neighbours of current Tile/Node
+        for (int nxy = 0; nxy < 8; nxy++)
         {
-            // Next x and y
-            int nx = x + drow[i];
-            int ny = y + dcol[i];
+            int neighbour_x = curr.x + dx[nxy];
+            int neighbour_y = curr.y + dy[nxy];
 
-            // Boundry check for next tile, since we might exit from map
-            if (nx < 0 || nx >= MAP_WIDTH || ny < 0 || ny >= MAP_HEIGHT)
+            // X map boundry check
+            if (neighbour_x < 0 || neighbour_x >= MAP_WIDTH)
                 continue;
 
-            int move_cost = map[nx][ny]->get_movement_cost();
-            int new_cost = dist[x][y] + move_cost;
+            // Y map boundry check
+            if (neighbour_y < 0 || neighbour_y >= MAP_HEIGHT)
+                continue;
 
-            if (new_cost < dist[nx][ny])
+            int neighbour_cost = curr.cost + map[neighbour_x][neighbour_y]->get_movement_cost();
+            if (neighbour_cost < dist[neighbour_x][neighbour_y])
             {
-                dist[nx][ny] = new_cost;
-                prev[nx][ny] = glm::ivec2(x, y);
-                pq.push(Node(nx, ny, new_cost));
+                prev[neighbour_x][neighbour_y] = glm::ivec2(curr.x, curr.y);
+                dist[neighbour_x][neighbour_y] = neighbour_cost;
+                pq.push(Node(neighbour_x, neighbour_y, neighbour_cost));
             }
         }
     }
 
-    // No path found
+    // No possible path
     if (dist[tx][ty] == INT_MAX)
         return -1;
 
-    rebuild_shortest_path(start, target, map);
+    rebuild_shortest_path(map, start, target);
 
     return dist[tx][ty];
 }
 
-void PathHandler::rebuild_shortest_path(
-    glm::vec2 start,
-    glm::vec2 target,
-    std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map)
+void PathHandler::rebuild_shortest_path(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map,
+    glm::ivec2 start, glm::ivec2 target)
 {
-    int sx = (int)start.x;
-    int sy = (int)start.y;
-    int tx = (int)target.x;
-    int ty = (int)target.y;
+    std::cout << "Building the shortest path.\n";
+    int sx = start.x;
+    int sy = start.y;
+    int tx = target.x;
+    int ty = target.y;
 
     int x = tx;
     int y = ty;
@@ -110,5 +110,5 @@ void PathHandler::rebuild_shortest_path(
         y = p.y;
     }
 
-    map[sx][sy]->set_path(); // mark start if desired
+    map[sx][sy]->set_path();
 }

@@ -7,7 +7,8 @@ namespace input {
 
 class Input {
 public:
-    static Input &get_instance() { 
+    static Input &get_instance()
+    { 
         static Input instance;
         return instance;
     }
@@ -15,19 +16,20 @@ public:
     Input(Input const&)             = delete;
     void operator=(Input const&)    = delete;
 
-    void bind(char key, std::unique_ptr<Command> command) {
+    void bind(char key, std::unique_ptr<Command> command)
+    {
         bindings[key] = std::move(command);
     }
     
-    Command* handle_input() {
+    Command* handle_input()
+    {
         char key;
         std::cout << "Your turn! ";
         std::cin >> key;
 
         auto it = bindings.find(key);
-        if (it != bindings.end()) {
+        if (it != bindings.end())
             return it->second.get();
-        }
         return nullptr;
     }
 

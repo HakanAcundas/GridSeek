@@ -12,10 +12,10 @@ class PathHandler
 {
 public:
     PathHandler();
-    int dijkstra(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map, glm::vec2 start, glm::vec2 target);
-    void rebuild_shortest_path(glm::vec2 start,
-        glm::vec2 target,
-        std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map);
+    int dijkstra(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map, 
+        glm::ivec2 start, glm::ivec2 target);
+    void rebuild_shortest_path(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map,
+        glm::ivec2 start, glm::ivec2 target);
 
     struct Node
     {

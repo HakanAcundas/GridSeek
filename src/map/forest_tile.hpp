@@ -8,9 +8,9 @@ public:
     void draw() override;
 
     // getters and setters
-    glm::vec2 get_coordinate() { return coord; }
-    void set_coordinate(glm::vec2 new_coord) { coord = new_coord; } 
+    glm::ivec2 get_coordinate() { return coord; }
+    void set_coordinate(glm::ivec2 new_coord) { coord = new_coord; } 
 private:
-    glm::vec2 coord;
+    glm::ivec2 coord;
     const char* texture = "F";
 };

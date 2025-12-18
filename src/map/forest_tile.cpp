@@ -8,7 +8,8 @@ ForestTile::ForestTile(glm::vec2 coordinate) : Tile(TileType::Forest, DEFAULT_FO
 
 ForestTile::ForestTile(int x, int y) : Tile(TileType::Forest, DEFAULT_FOREST_MOVEMENT_COST), coord(glm::vec2(x, y)) {}
 
-void ForestTile::draw() {
+void ForestTile::draw()
+{
     HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);
     if (is_path())
     {

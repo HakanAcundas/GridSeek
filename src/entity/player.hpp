@@ -6,17 +6,18 @@
 #define DEFAULT_JUMP_POWER 1
 #define DEFAULT_POSITION 0  // (0,0) as vec2
 
-class Player : public Entity{
+class Player : public Entity
+{
 public:
     Player();
     Player(int posX, int posY);
     ~Player() override;
 
-    void move(glm::vec2 direction) override;
+    void move(glm::ivec2 direction) override;
     void attack() override;
     void draw();
 private:
-    glm::vec2 speed;
+    glm::ivec2 speed;
     int jump_power;
     const char* texture = "P";
 };
