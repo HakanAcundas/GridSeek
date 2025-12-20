@@ -25,6 +25,7 @@ public:
     void reset_path() { path_flag = false; }
     bool is_touched() { return touched_flag; }
     void touch() { touched_flag = true; }
+    void reset_touch() { touched_flag = false; }
     
 protected:
     int ID;

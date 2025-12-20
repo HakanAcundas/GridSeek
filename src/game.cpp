@@ -29,13 +29,14 @@ DPErrorCode Game::init()
 
     
     code = create_target();
-    // code = create_target();
-    // code = create_target();
-    // code = create_target();
-    // code = create_target();
+    code = create_target();
+    code = create_target();
+    code = create_target();
+    code = create_target();
     if (code != DPErrorCode::SUCCESS)
         return code;
 
+    set_running();
     return DPErrorCode::SUCCESS;
 }
 
@@ -140,8 +141,8 @@ DPErrorCode Game::create_target()
 }
 
 DPErrorCode Game::print_map() {
-    for (int column = 0; column < MAP_HEIGHT; column++)
-    {
+        for (int column = 0; column < MAP_HEIGHT; column++)
+        {
         for (int row = 0; row < MAP_WIDTH; row++)
         {
             if (player.get_position() == glm::ivec2(row, column))
@@ -172,10 +173,11 @@ DPErrorCode Game::bind_input()
 {
     try {
         Input *input  = &Input::get_instance();
-        input->bind('w', std::make_unique<MoveCommand>(glm::ivec2(-1,0)));
-        input->bind('s', std::make_unique<MoveCommand>(glm::ivec2(1,0)));
-        input->bind('d', std::make_unique<MoveCommand>(glm::ivec2(0,1)));
-        input->bind('a', std::make_unique<MoveCommand>(glm::ivec2(0,-1)));
+        input->bind('w', std::make_unique<MoveCommand>(glm::ivec2(0,-1)));
+        input->bind('s', std::make_unique<MoveCommand>(glm::ivec2(0,1)));
+        input->bind('d', std::make_unique<MoveCommand>(glm::ivec2(1,0)));
+        input->bind('a', std::make_unique<MoveCommand>(glm::ivec2(-1,0)));
+        input->bind('q', std::make_unique<MoveCommand>(glm::ivec2(-1, 0)));
     } catch(const std::exception& e) { 
         return DPErrorCode::INPUT_BINDING_ERROR;
     }
@@ -185,13 +187,14 @@ DPErrorCode Game::bind_input()
 
 void Game::run()
 {
-    PathHandler ph;
-    std::cout << "Target location: " << targets.at(0).get_position().x << ", "
-        << targets.at(0).get_position().y << "\n";
-    int cost = ph.dijkstra(map, player.get_position(), targets.at(0).get_position());
+    PathHandler ph(map);
+    std::vector<glm::ivec2> tpositions;
+    for (Target t : targets)
+    {
+        tpositions.push_back(t.get_position());
+    }
+    int cost = ph.find_shortest_path(player.get_position(), tpositions);
     std::cout << "Path cost is: " << cost << "\n";
-    
-    set_running();
     while (is_running())
     {
         Command *command = Input::get_instance().handle_input();

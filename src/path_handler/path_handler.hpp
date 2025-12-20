@@ -11,11 +11,12 @@
 class PathHandler
 {
 public:
-    PathHandler();
-    int dijkstra(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map, 
-        glm::ivec2 start, glm::ivec2 target);
-    void rebuild_shortest_path(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map,
-        glm::ivec2 start, glm::ivec2 target);
+    PathHandler(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map);
+    ~PathHandler() = default;
+
+    int find_shortest_path(glm::ivec2 start, std::vector<glm::ivec2> target_positions);
+    int dijkstra(glm::ivec2 start, glm::ivec2 target);
+    void rebuild_shortest_path(glm::ivec2 start, glm::ivec2 target);
 
     struct Node
     {
@@ -32,6 +33,7 @@ public:
         }
     };
 private:
+    std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map;
     int dist[MAP_WIDTH][MAP_HEIGHT];
     glm::ivec2 prev[MAP_WIDTH][MAP_HEIGHT];
     std::priority_queue<Node, std::vector<Node>, CompareCost> pq;

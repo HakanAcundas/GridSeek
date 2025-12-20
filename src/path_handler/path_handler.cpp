@@ -1,16 +1,29 @@
 #include <iostream>
 #include "path_handler.hpp"
 
-PathHandler::PathHandler()
+PathHandler::PathHandler(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map)
+    : map(map)
 {
+    this->dist[MAP_WIDTH][MAP_HEIGHT] = { INT_MAX };
+    this->prev[MAP_WIDTH][MAP_HEIGHT] = { glm::ivec2(-1,-1) };
+}
 
+int PathHandler::find_shortest_path(glm::ivec2 start, std::vector<glm::ivec2> target_positions)
+{
+    int total_cost = 0;
+    for (glm::ivec2 tpos : target_positions)
+    {
+        total_cost += dijkstra(start, tpos);
+        rebuild_shortest_path(start, tpos);
+        start = tpos;
+    }
+
+    return total_cost;
 }
 
 // Pseudocode: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Pseudocode
-int PathHandler::dijkstra(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map,
-    glm::ivec2 start, glm::ivec2 target)
+int PathHandler::dijkstra(glm::ivec2 start, glm::ivec2 target)
 {
-    std::cout << "Dijkstra tries to find shortest path.\n";
     // Clear priority queue
     pq = std::priority_queue<Node, std::vector<Node>, CompareCost>();
     
@@ -31,7 +44,7 @@ int PathHandler::dijkstra(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGH
 
             prev[x][y] = glm::ivec2(-1, -1);    // Undefined
             dist[x][y] = INT_MAX;               // Mark as infinity, since we don't know the cost yet
-            map[x][y]->reset_path();
+            map[x][y]->reset_touch();           // Reset the touched flag, for calculating next shortest path to next target
         }
     }
 
@@ -81,13 +94,10 @@ int PathHandler::dijkstra(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGH
     if (dist[tx][ty] == INT_MAX)
         return -1;
 
-    rebuild_shortest_path(map, start, target);
-
     return dist[tx][ty];
 }
 
-void PathHandler::rebuild_shortest_path(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map,
-    glm::ivec2 start, glm::ivec2 target)
+void PathHandler::rebuild_shortest_path(glm::ivec2 start, glm::ivec2 target)
 {
     std::cout << "Building the shortest path.\n";
     int sx = start.x;
