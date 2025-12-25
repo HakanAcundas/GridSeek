@@ -2,6 +2,10 @@
 #include <Windows.h>
 #include "Target.hpp"
 
+Target::Target(int id, int posX, int posY) : id(id)
+{
+    position = glm::ivec2(posX, posY);
+}
 
 Target::Target(int posX, int posY)
 {

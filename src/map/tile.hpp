@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "../shared/global_settings.hpp"
 
 enum struct TileType {
     Forest,
@@ -20,7 +21,7 @@ public:
     void set_tile_type(TileType new_ttype) { ttype = new_ttype; }
     int get_movement_cost() { return movement_cost; }
     void set_movement_cost(int new_mcost) { movement_cost = new_mcost; }
-    void set_path() { path_flag = !path_flag; }
+    void set_path() { path_flag = true; }
     bool is_path() { return path_flag; }
     void reset_path() { path_flag = false; }
     bool is_touched() { return touched_flag; }

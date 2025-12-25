@@ -3,7 +3,7 @@
 #include <chrono>
 #include <random>
 #include "../shared/global_settings.hpp"
-#include "game.hpp"
+#include "grid.hpp"
 #include "command.hpp"
 #include "input.hpp"
 #include "map/forest_tile.hpp"
@@ -12,12 +12,12 @@
 
 using namespace input;
 
-Game::Game()
+Grid::Grid()
 {
     init();
 }
 
-DPErrorCode Game::init()
+DPErrorCode Grid::init()
 {
     DPErrorCode code = genarate_map(); 
     if (code != DPErrorCode::SUCCESS)
@@ -31,8 +31,6 @@ DPErrorCode Game::init()
     code = create_target();
     code = create_target();
     code = create_target();
-    code = create_target();
-    code = create_target();
     if (code != DPErrorCode::SUCCESS)
         return code;
 
@@ -40,7 +38,7 @@ DPErrorCode Game::init()
     return DPErrorCode::SUCCESS;
 }
 
-DPErrorCode Game::genarate_map()
+DPErrorCode Grid::genarate_map()
 {
     // Random device and distribution.
     std::random_device rdevice;
@@ -114,7 +112,7 @@ DPErrorCode Game::genarate_map()
     return DPErrorCode::SUCCESS;
 }
 
-DPErrorCode Game::create_target()
+DPErrorCode Grid::create_target()
 {
     // TODO: Set maximum number of target
 
@@ -125,7 +123,8 @@ DPErrorCode Game::create_target()
     std::uniform_int_distribution<std::mt19937::result_type> rand_posy(0, MAP_HEIGHT - 1);
     
     glm::ivec2 position {rand_posx(rng), rand_posy(rng)};
-    for (int i = 0; i < targets.size(); i++)
+    int i = 0;
+    for (i = 0; i < targets.size(); i++)
     {
         // Check if new position is overlapping any of the existing entity position.
         if (position == targets.at(i).get_position() && position == player.get_position())
@@ -134,13 +133,13 @@ DPErrorCode Game::create_target()
             i = 0;
         }
     }
-    Target new_target(position.x, position.y);
+    Target new_target(i, position.x, position.y);
     targets.push_back(new_target);
 
     return DPErrorCode::SUCCESS;
 }
 
-DPErrorCode Game::print_map() {
+DPErrorCode Grid::print_map() {
         for (int column = 0; column < MAP_HEIGHT; column++)
         {
         for (int row = 0; row < MAP_WIDTH; row++)
@@ -169,7 +168,7 @@ DPErrorCode Game::print_map() {
     return DPErrorCode::SUCCESS;
 }
 
-DPErrorCode Game::bind_input()
+DPErrorCode Grid::bind_input()
 {
     try {
         Input *input  = &Input::get_instance();
@@ -185,7 +184,7 @@ DPErrorCode Game::bind_input()
     return DPErrorCode::SUCCESS;
 }
 
-void Game::run()
+void Grid::run()
 {
     PathHandler ph(map);
     std::vector<glm::ivec2> tpositions;

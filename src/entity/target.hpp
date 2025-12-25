@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "../shared/global_settings.hpp"
 #include "entity.hpp"
 
 class Target : public Entity
@@ -7,6 +8,7 @@ class Target : public Entity
 public:
     bool is_visited = false;
     
+    Target(int id, int posX, int posY);
     Target(int posX, int posY);
     ~Target() override;
 
@@ -16,5 +18,5 @@ public:
     
 private:
     unsigned int id;
-    const char* texture = "T";
+    char texture = TEXTURE_TARGET;
 };

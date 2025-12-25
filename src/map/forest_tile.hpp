@@ -12,5 +12,5 @@ public:
     void set_coordinate(glm::ivec2 new_coord) { coord = new_coord; } 
 private:
     glm::ivec2 coord;
-    const char* texture = "F";
+    char texture = TEXTURE_FOREST;
 };

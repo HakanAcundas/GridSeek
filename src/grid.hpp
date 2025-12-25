@@ -13,10 +13,10 @@
 
 #define CLEARSCREEN system ( "cls" )
 
-class Game {
+class Grid {
 public:
-    Game();
-    ~Game() {};
+    Grid();
+    ~Grid() {};
 
     DPErrorCode init();
     void run();

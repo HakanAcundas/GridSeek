@@ -1,7 +1,7 @@
-#include "src/game.hpp"
+#include "src/grid.hpp"
 
 int main()
 {
-    Game game;
-    game.run();
+    Grid grid;
+    grid.run();
 }

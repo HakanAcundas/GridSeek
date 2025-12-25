@@ -4,8 +4,6 @@
 PathHandler::PathHandler(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map)
     : map(map)
 {
-    this->dist[MAP_WIDTH][MAP_HEIGHT] = { INT_MAX };
-    this->prev[MAP_WIDTH][MAP_HEIGHT] = { glm::ivec2(-1,-1) };
 }
 
 int PathHandler::find_shortest_path(glm::ivec2 start, std::vector<glm::ivec2> target_positions)
@@ -24,13 +22,14 @@ int PathHandler::find_shortest_path(glm::ivec2 start, std::vector<glm::ivec2> ta
 // Pseudocode: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Pseudocode
 int PathHandler::dijkstra(glm::ivec2 start, glm::ivec2 target)
 {
-    // Clear priority queue
     pq = std::priority_queue<Node, std::vector<Node>, CompareCost>();
-    
+
     int sx = start.x;
     int sy = start.y;
     int tx = target.x;
     int ty = target.y;
+
+    // First start from "start" position
     dist[sx][sy] = 0;
     pq.push(Node(sx, sy, 0));
 
@@ -48,9 +47,9 @@ int PathHandler::dijkstra(glm::ivec2 start, glm::ivec2 target)
         }
     }
 
-    // Possible x, y directions
-    int dx[8] = { 1, -1, 0, 0, 1, 1, -1, -1};
-    int dy[8] = { 0, 0, 1, -1, 1, -1, 1, -1};
+    // Possible x, y directions. Up down, left and right
+    int dx[4] = { 1, -1, 0, 0};
+    int dy[4] = { 0, 0, 1, -1};
     while (!pq.empty())
     {
         Node curr = pq.top();
@@ -61,13 +60,13 @@ int PathHandler::dijkstra(glm::ivec2 start, glm::ivec2 target)
             break;
 
         // Check if we have shorter path cost
-        if (curr.cost > dist[curr.x][curr.y] || map[curr.x][curr.y]->is_touched())
+        if (curr.cost > dist[curr.x][curr.y])
             continue;
 
         map[curr.x][curr.y]->touch();
 
         // Go through all possible neighbours of current Tile/Node
-        for (int nxy = 0; nxy < 8; nxy++)
+        for (int nxy = 0; nxy < 4; nxy++)
         {
             int neighbour_x = curr.x + dx[nxy];
             int neighbour_y = curr.y + dy[nxy];
@@ -99,7 +98,6 @@ int PathHandler::dijkstra(glm::ivec2 start, glm::ivec2 target)
 
 void PathHandler::rebuild_shortest_path(glm::ivec2 start, glm::ivec2 target)
 {
-    std::cout << "Building the shortest path.\n";
     int sx = start.x;
     int sy = start.y;
     int tx = target.x;
@@ -108,9 +106,10 @@ void PathHandler::rebuild_shortest_path(glm::ivec2 start, glm::ivec2 target)
     int x = tx;
     int y = ty;
 
+    map[sx][sy]->set_path();
     while (!(x == sx && y == sy))
     {
-        if (prev[x][y].x == -1)
+        if (prev[x][y].x == -1 || prev[x][y].y == -1)
             break;
 
         map[x][y]->set_path();
@@ -119,6 +118,4 @@ void PathHandler::rebuild_shortest_path(glm::ivec2 start, glm::ivec2 target)
         x = p.x;
         y = p.y;
     }
-
-    map[sx][sy]->set_path();
 }
