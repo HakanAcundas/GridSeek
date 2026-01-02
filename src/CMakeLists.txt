@@ -11,7 +11,7 @@ FetchContent_MakeAvailable(glm)
 
 add_library(gamelib 
     "grid.cpp"
-    entity/player.cpp
+    
     entity/target.cpp
     map/forest_tile.cpp
     map/snow_tile.cpp

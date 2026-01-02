@@ -7,7 +7,6 @@
 #include <glm/glm.hpp>
 #include "../shared/global_settings.hpp"
 #include "error.hpp"
-#include "entity/player.hpp"
 #include "entity/target.hpp"
 #include "map/tile.hpp"
 
@@ -37,7 +36,6 @@ public:
 
 private:
     bool running = false;
-    Player player;
     std::vector<Target> targets;
     std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH> map;
 };

@@ -123,33 +123,26 @@ DPErrorCode Grid::create_target()
     std::uniform_int_distribution<std::mt19937::result_type> rand_posy(0, MAP_HEIGHT - 1);
     
     glm::ivec2 position {rand_posx(rng), rand_posy(rng)};
-    int i = 0;
-    for (i = 0; i < targets.size(); i++)
+
+    // Check if new position is not overlapping with the previous existing entity position and start position.
+    while (position == glm::ivec2(0, 0) && targets.size() > 0 && position == targets.back().get_position())
     {
-        // Check if new position is overlapping any of the existing entity position.
-        if (position == targets.at(i).get_position() && position == player.get_position())
-        {
-            position = glm::ivec2(rand_posx(rng), rand_posy(rng)); // Set new position.
-            i = 0;
-        }
+        position = glm::ivec2(rand_posx(rng), rand_posy(rng)); // Set new position.
     }
-    Target new_target(i, position.x, position.y);
+
+    int id = targets.size();
+
+    Target new_target(id, position.x, position.y);
     targets.push_back(new_target);
 
     return DPErrorCode::SUCCESS;
 }
 
 DPErrorCode Grid::print_map() {
-        for (int column = 0; column < MAP_HEIGHT; column++)
-        {
+    for (int column = 0; column < MAP_HEIGHT; column++)
+    {
         for (int row = 0; row < MAP_WIDTH; row++)
-        {
-            if (player.get_position() == glm::ivec2(row, column))
-            {
-                player.draw();
-                continue;
-            }
-            
+        {   
             for (Target target : targets)
             {
                 glm::ivec2 target_pos = target.get_position();
@@ -192,13 +185,13 @@ void Grid::run()
     {
         tpositions.push_back(t.get_position());
     }
-    int cost = ph.find_shortest_path(player.get_position(), tpositions);
+    int cost = ph.find_shortest_path(glm::ivec2(0, 0), tpositions);
     std::cout << "Path cost is: " << cost << "\n";
     while (is_running())
     {
         Command *command = Input::get_instance().handle_input();
-        if (command)
-            command->execute(player);
+        //if (command)
+        //    command->execute(player);
         
         CLEARSCREEN;
         print_map();
