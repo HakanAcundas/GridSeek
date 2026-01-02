@@ -1,9 +1,7 @@
 #pragma once
 #include <array>
 #include <vector>
-#include <string>
 #include <stdlib.h>
-#include <memory>
 #include <glm/glm.hpp>
 #include "../shared/global_settings.hpp"
 #include "error.hpp"

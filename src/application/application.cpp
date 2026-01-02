@@ -19,8 +19,16 @@ DPErrorCode Application::init()
 
 void Application::run()
 {
+	Input& input = Input::get_instance();
 	std::vector<glm::ivec2> targets = grid.get_targets();
-	int cost = ph.find_shortest_path(glm::ivec2(0, 0), targets);
-	grid.run();
-	std::cout << "PathCost is: " << cost << "\n";
+
+	while (grid.is_running())
+	{
+		int cost = ph.find_shortest_path(glm::ivec2(0, 0), targets);
+		grid.run();
+		std::cout << "PathCost is: " << cost << "\n";
+		Command* command = Input::get_instance().handle_input();
+		if (command)
+			command->execute();
+	}
 }

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <chrono>
 #include <random>
-#include "../shared/global_settings.hpp"
 #include "grid.hpp"
 #include "map/forest_tile.hpp"
 #include "map/snow_tile.hpp"
@@ -151,12 +150,6 @@ DPErrorCode Grid::print_map() {
 }
 
 void Grid::run()
-{
-    std::vector<glm::ivec2> tpositions;
-    for (Target t : targets)
-    {
-        tpositions.push_back(t.get_position());
-    }
-
+{   
     print_map();
 }

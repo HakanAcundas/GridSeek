@@ -30,6 +30,8 @@ public:
     int taxicap_distance(glm::ivec2 left, glm::ivec2 right);
     void switch_algorithm(Algorithm alg);
 
+    Algorithm get_current_algorithm() { return current_alg; }
+
     struct Node
     {
         int x, y, cost;
