@@ -1,7 +1,7 @@
-#include "src/grid.hpp"
+#include "application/Application.hpp"
 
 int main()
 {
-    Grid grid;
-    grid.run();
+    Application app;
+    app.run();
 }

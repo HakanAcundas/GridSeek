@@ -1,9 +1,9 @@
 #pragma once
+
 #include <iostream>
 #include <unordered_map>
-#include "command.hpp"
-
-namespace input {
+#include <memory>
+#include "../command.hpp"
 
 class Input {
 public:
@@ -37,4 +37,3 @@ private:
     std::unordered_map<char, std::unique_ptr<Command>> bindings;
     Input() {}
 };
-}

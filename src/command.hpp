@@ -1,36 +1,40 @@
 #pragma once
+
 #include "error.hpp"
-#include "entity.hpp"
+#include "../path_handler/path_handler.hpp"
 
 class Command
 {
 public:
     virtual ~Command() {}
-    virtual DPErrorCode execute(Entity& e) = 0;
+    virtual DPErrorCode execute() = 0;
 };
 
-class MoveCommand : public Command
+class CommandClose : public Command
 {
 public:
-    MoveCommand(glm::vec2 direction) : direction(direction) {}
-    ~MoveCommand() override {}
-    DPErrorCode execute(Entity& e) override
+    CommandClose(Grid& grid) : grid(grid) {}
+    ~CommandClose() override {}
+    DPErrorCode execute() override
     {
-        e.move(direction);
+        grid.set_running();
         return DPErrorCode::SUCCESS;
     }
-
 private:
-    glm::vec2 direction;
+    Grid& grid;
 };
 
-class AttackCommand : public Command
+class CommandChangeAlgorithmToAStar : public Command
 {
 public:
-    ~AttackCommand() override {}
-    DPErrorCode execute(Entity& e) override
+    CommandChangeAlgorithmToAStar(PathHandler& ph) : ph(ph){}
+    ~CommandChangeAlgorithmToAStar() override {}
+
+    DPErrorCode execute() override
     {
-        e.attack();
+        ph.switch_algorithm(Algorithm::ASTAR);
         return DPErrorCode::SUCCESS;
     }
+private:
+    PathHandler& ph;
 };

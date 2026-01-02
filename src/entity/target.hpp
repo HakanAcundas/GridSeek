@@ -1,4 +1,5 @@
 #pragma once
+
 #include <glm/glm.hpp>
 #include "../shared/global_settings.hpp"
 #include "entity.hpp"
@@ -11,9 +12,6 @@ public:
     Target(int id, int posX, int posY);
     Target(int posX, int posY);
     ~Target() override;
-
-    void move(glm::ivec2 direction) override;
-    void attack() override;
     void draw();
     
 private:

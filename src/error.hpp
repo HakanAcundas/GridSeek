@@ -1,4 +1,5 @@
 #pragma once
+
 // Application error codes
 enum struct DPErrorCode
 {

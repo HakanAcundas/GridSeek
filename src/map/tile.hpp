@@ -1,4 +1,5 @@
 #pragma once
+
 #include <glm/glm.hpp>
 #include "../shared/global_settings.hpp"
 

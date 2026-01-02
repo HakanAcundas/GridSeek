@@ -1,17 +1,39 @@
 #include <iostream>
 #include "path_handler.hpp"
 
-PathHandler::PathHandler(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map)
+PathHandler::PathHandler(Grid::TileMap& map)
     : map(map)
 {
 }
 
+void PathHandler::switch_algorithm(Algorithm alg)
+{
+    current_alg = alg;
+}
+
+// Pseudocode: https://en.wikipedia.org/wiki/A*_search_algorithm
 int PathHandler::find_shortest_path(glm::ivec2 start, std::vector<glm::ivec2> target_positions)
 {
+    typedef int(PathHandler::*AlgorithmFunction)(glm::ivec2, glm::ivec2);
+    AlgorithmFunction algorithm = nullptr;
+
+    switch (current_alg)
+    {
+    case Algorithm::DIJKSTRA:
+        algorithm = &PathHandler::dijkstra;;
+        break;
+    case Algorithm::ASTAR:
+        algorithm = &PathHandler::a_star;
+        break;
+    case Algorithm::UNDEFINED:
+        std::cout << "Undefined Algorithm!" << std::endl;
+        break;
+    }
+
     int total_cost = 0;
     for (glm::ivec2 tpos : target_positions)
     {
-        total_cost += a_star(start, tpos);
+        total_cost += (this->*algorithm)(start, tpos);
         rebuild_shortest_path(start, tpos);
         start = tpos;
     }

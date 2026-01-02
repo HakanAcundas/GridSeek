@@ -14,16 +14,6 @@ Target::Target(int posX, int posY)
 
 Target::~Target() {}
 
-void Target::move(glm::ivec2 direction)
-{
-
-}
-
-void Target::attack()
-{
-
-}
-
 void Target::draw()
 {
     HANDLE hc = GetStdHandle(STD_OUTPUT_HANDLE);

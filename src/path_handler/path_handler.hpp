@@ -6,12 +6,21 @@
 #include <algorithm>
 #include <queue>
 #include "../../shared/global_settings.hpp"
-#include "../map/tile.hpp"
+#include "../error.hpp"
+#include "path_handler.hpp"
+#include "grid.hpp"
+
+enum struct Algorithm
+{
+    UNDEFINED = 0,
+    DIJKSTRA = 1,
+    ASTAR = 2,
+};
 
 class PathHandler
 {
 public:
-    PathHandler(std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map);
+    PathHandler(Grid::TileMap& map);
     ~PathHandler() = default;
 
     int find_shortest_path(glm::ivec2 start, std::vector<glm::ivec2> target_positions);
@@ -19,6 +28,7 @@ public:
     int a_star(glm::ivec2 start, glm::ivec2 target);
     void rebuild_shortest_path(glm::ivec2 start, glm::ivec2 target);
     int taxicap_distance(glm::ivec2 left, glm::ivec2 right);
+    void switch_algorithm(Algorithm alg);
 
     struct Node
     {
@@ -46,6 +56,7 @@ public:
     };
 
 private:
+    Algorithm current_alg = Algorithm::DIJKSTRA;
     std::array<std::array<std::unique_ptr<Tile>, MAP_HEIGHT>, MAP_WIDTH>& map;
     int dist[MAP_WIDTH][MAP_HEIGHT];
     glm::ivec2 prev[MAP_WIDTH][MAP_HEIGHT];

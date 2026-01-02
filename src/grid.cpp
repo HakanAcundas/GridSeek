@@ -1,16 +1,10 @@
 #include <iostream>
-#include <thread>
 #include <chrono>
 #include <random>
 #include "../shared/global_settings.hpp"
 #include "grid.hpp"
-#include "command.hpp"
-#include "input.hpp"
 #include "map/forest_tile.hpp"
 #include "map/snow_tile.hpp"
-#include "../path_handler/path_handler.hpp"
-
-using namespace input;
 
 Grid::Grid()
 {
@@ -22,11 +16,6 @@ DPErrorCode Grid::init()
     DPErrorCode code = genarate_map(); 
     if (code != DPErrorCode::SUCCESS)
         return code;
-
-    code = bind_input();
-    if (code != DPErrorCode::SUCCESS)
-        return code;
-
     
     code = create_target();
     code = create_target();
@@ -161,40 +150,13 @@ DPErrorCode Grid::print_map() {
     return DPErrorCode::SUCCESS;
 }
 
-DPErrorCode Grid::bind_input()
-{
-    try {
-        Input *input  = &Input::get_instance();
-        input->bind('w', std::make_unique<MoveCommand>(glm::ivec2(0,-1)));
-        input->bind('s', std::make_unique<MoveCommand>(glm::ivec2(0,1)));
-        input->bind('d', std::make_unique<MoveCommand>(glm::ivec2(1,0)));
-        input->bind('a', std::make_unique<MoveCommand>(glm::ivec2(-1,0)));
-        input->bind('q', std::make_unique<MoveCommand>(glm::ivec2(-1, 0)));
-    } catch(const std::exception& e) { 
-        return DPErrorCode::INPUT_BINDING_ERROR;
-    }
-
-    return DPErrorCode::SUCCESS;
-}
-
 void Grid::run()
 {
-    PathHandler ph(map);
     std::vector<glm::ivec2> tpositions;
     for (Target t : targets)
     {
         tpositions.push_back(t.get_position());
     }
-    int cost = ph.find_shortest_path(glm::ivec2(0, 0), tpositions);
-    std::cout << "Path cost is: " << cost << "\n";
-    while (is_running())
-    {
-        Command *command = Input::get_instance().handle_input();
-        //if (command)
-        //    command->execute(player);
-        
-        CLEARSCREEN;
-        print_map();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
+
+    print_map();
 }
