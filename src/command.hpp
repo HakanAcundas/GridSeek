@@ -17,7 +17,7 @@ public:
     ~CommandClose() override {}
     DPErrorCode execute() override
     {
-        grid.set_running();
+        grid.close();
         return DPErrorCode::SUCCESS;
     }
 private:
@@ -37,4 +37,34 @@ public:
     }
 private:
     PathHandler& ph;
+};
+
+class CommandChangeAlgorithmToDijkstra : public Command
+{
+public:
+    CommandChangeAlgorithmToDijkstra(PathHandler& ph) : ph(ph) {}
+    ~CommandChangeAlgorithmToDijkstra() override {};
+
+    DPErrorCode execute() override
+    {
+        ph.switch_algorithm(Algorithm::DIJKSTRA);
+        return DPErrorCode::SUCCESS;
+    }
+private:
+    PathHandler& ph;
+};
+
+class CommandNewGrid : public Command
+{
+public:
+    CommandNewGrid(Grid& grid) : grid(grid){}
+    ~CommandNewGrid() override {};
+
+    DPErrorCode execute() override
+    {
+        grid.init();
+        return DPErrorCode::SUCCESS;
+    }
+private:
+    Grid& grid;
 };

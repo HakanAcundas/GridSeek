@@ -17,6 +17,16 @@ enum struct Algorithm
     ASTAR = 2,
 };
 
+inline std::string to_string(Algorithm alg)
+{
+    switch (alg)
+    {
+    case Algorithm::DIJKSTRA:   return "Dijkstra";
+    case Algorithm::ASTAR:   return "A*";
+    default:      return "Undefined";
+    }
+}
+
 class PathHandler
 {
 public:

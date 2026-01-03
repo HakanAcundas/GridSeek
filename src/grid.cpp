@@ -12,15 +12,19 @@ Grid::Grid()
 
 DPErrorCode Grid::init()
 {
-    DPErrorCode code = genarate_map(); 
+    if (!targets.empty())
+        targets.erase(targets.begin(), targets.end());
+    
+    DPErrorCode code = genarate_map();
     if (code != DPErrorCode::SUCCESS)
         return code;
     
-    code = create_target();
-    code = create_target();
-    code = create_target();
-    if (code != DPErrorCode::SUCCESS)
-        return code;
+    for (int i = 0; i < tcount; i++)
+    {
+        code = create_target();
+        if (code != DPErrorCode::SUCCESS)
+            return code;
+    }
 
     set_running();
     return DPErrorCode::SUCCESS;
@@ -69,7 +73,7 @@ DPErrorCode Grid::genarate_map()
                     {
                         unsigned int x = startX + row;
                         unsigned int y = startY + col;
-
+                        
                         switch (blob_type)
                         {
                             case 1:

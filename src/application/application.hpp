@@ -13,6 +13,7 @@ public:
 
 	DPErrorCode init();
 	void run();
+	void print_menu();
 
 private:
 	Grid grid;

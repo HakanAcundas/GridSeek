@@ -14,7 +14,7 @@ public:
     Tile() : ttype(TileType::Forest) {}
     Tile(TileType type) : ttype(type) {}
     Tile(TileType type, int movement_cost) : ttype(type), movement_cost(movement_cost) {}
-    ~Tile() {}
+    virtual ~Tile() {};
     virtual void draw() = 0;
 
     // getters and setters

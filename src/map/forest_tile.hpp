@@ -5,6 +5,7 @@ class ForestTile : public Tile {
 public:
     ForestTile(glm::vec2 coordinate);
     ForestTile(int x, int y);
+    ~ForestTile() override {}
     void draw() override;
 
     // getters and setters

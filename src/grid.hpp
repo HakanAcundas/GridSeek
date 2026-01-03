@@ -8,8 +8,6 @@
 #include "entity/target.hpp"
 #include "map/tile.hpp"
 
-#define CLEARSCREEN system ( "cls" )
-
 class Grid
 {
 public:
@@ -40,10 +38,12 @@ public:
     }
 
     // Setters
-    void set_running() { running = !running; }
+    void set_running() { running = true; }
+    void close() { running = false; }
 
 private:
     bool running = false;
+    unsigned int tcount = 3;            // target count
     std::vector<Target> targets;
     TileMap map;
 };

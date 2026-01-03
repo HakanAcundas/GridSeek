@@ -24,7 +24,11 @@ public:
     Command* handle_input()
     {
         char key;
-        std::cout << "Your turn! ";
+        
+        std::cout << "-------------------------------------------------------------------"
+            "\n\nFor create a new grid please press 'r' key.\n"
+            "for switching between algorihtms press 'd' key, for Dijkstra and 'a' key for A*.\n"
+            "for shutdown the GridSeek please press 'q' key.\n";
         std::cin >> key;
 
         auto it = bindings.find(key);

@@ -5,6 +5,7 @@ class SnowTile : public Tile {
 public:
     SnowTile(glm::ivec2 coordinate);
     SnowTile(int x, int y);
+    ~SnowTile() override {}
     void draw() override;
 
     // getters and setters
