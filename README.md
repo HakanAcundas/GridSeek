@@ -21,7 +21,7 @@ After executing these commands, CMake will generate the GridSeek.exe file in you
 
 ## Input System
 
-I used Command architecture for the input system. The reason is, why not? :) It is more scalable than a normal switch, if input statements. Additionally, the “game loop” becomes more readable.
+I used [Command](https://gameprogrammingpatterns.com/command.html) architecture for the input system. The reason is, why not? :) It is more scalable than a normal switch, if input statements. Additionally, the “game loop” becomes more readable.
 
 As you can see:
 ```
