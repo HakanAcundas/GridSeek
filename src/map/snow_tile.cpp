@@ -2,11 +2,9 @@
 #include <Windows.h>
 #include "snow_tile.hpp"
 
-#define DEFAULT_SNOW_MOVEMENT_COST 15
+SnowTile::SnowTile(glm::ivec2 coordinate) :  Tile(TileType::Snow, SNOW_MOVEMENT_COST), coord(coordinate) {}
 
-SnowTile::SnowTile(glm::ivec2 coordinate) :  Tile(TileType::Snow, DEFAULT_SNOW_MOVEMENT_COST), coord(coordinate) {}
-
-SnowTile::SnowTile(int x, int y) :  Tile(TileType::Snow, DEFAULT_SNOW_MOVEMENT_COST), coord(glm::ivec2(x, y)) {}
+SnowTile::SnowTile(int x, int y) :  Tile(TileType::Snow, SNOW_MOVEMENT_COST), coord(glm::ivec2(x, y)) {}
 
 void SnowTile::draw()
 {
