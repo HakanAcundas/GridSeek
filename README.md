@@ -23,7 +23,7 @@ After executing these commands, CMake will generate the GridSeek.exe file in you
 
 I used [Command](https://gameprogrammingpatterns.com/command.html) architecture for the input system. The reason is, why not? :) It is more scalable than a normal switch, if input statements. Additionally, the “game loop” becomes more readable.
 
-As you can see:
+As you can see in [application run function](src/application/application.cpp):
 ```
 Command* command = Input::get_instance().handle_input();
 		if (command)
