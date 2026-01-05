@@ -11,7 +11,6 @@ void PathHandler::switch_algorithm(Algorithm alg)
     current_alg = alg;
 }
 
-// Pseudocode: https://en.wikipedia.org/wiki/A*_search_algorithm
 int PathHandler::find_shortest_path(glm::ivec2 start, std::vector<glm::ivec2> target_positions)
 {
     typedef int(PathHandler::*AlgorithmFunction)(glm::ivec2, glm::ivec2);
@@ -118,6 +117,7 @@ int PathHandler::dijkstra(glm::ivec2 start, glm::ivec2 target)
     return dist[tx][ty];
 }
 
+// Pseudocode: https://en.wikipedia.org/wiki/A*_search_algorithm
 int PathHandler::a_star(glm::ivec2 start, glm::ivec2 target)
 {
     std::priority_queue<Node, std::vector<Node>, CompareTentativeScore> pq;

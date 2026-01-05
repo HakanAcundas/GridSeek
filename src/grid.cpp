@@ -152,8 +152,3 @@ DPErrorCode Grid::print_map() {
 
     return DPErrorCode::SUCCESS;
 }
-
-void Grid::run()
-{   
-    print_map();
-}

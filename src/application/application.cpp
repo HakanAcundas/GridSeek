@@ -29,7 +29,7 @@ void Application::run()
 		std::string alg = to_string(ph.get_current_algorithm());;
 		std::cout << "Current Algorithm is: " << alg << "\n";
 		int cost = ph.find_shortest_path(glm::ivec2(0, 0), targets);
-		grid.run();
+		grid.print_map();
 		std::cout << "PathCost is: " << cost << "\n";
 		Command* command = Input::get_instance().handle_input();
 		if (command)

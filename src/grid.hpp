@@ -17,7 +17,6 @@ public:
     ~Grid() {};
 
     DPErrorCode init();
-    void run();
     DPErrorCode genarate_map();
     DPErrorCode create_target();
     DPErrorCode print_map();
