@@ -40,8 +40,8 @@ I used [Command](https://gameprogrammingpatterns.com/command.html) architecture 
 As you can see in [application run function](src/application/application.cpp):
 ```
 Command* command = Input::get_instance().handle_input();
-		if (command)
-			command->execute();
+if (command)
+	command->execute();
 ```
 
 Can handle all commands (including input commands and other commands) with only one if condition.
