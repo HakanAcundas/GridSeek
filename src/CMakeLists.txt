@@ -10,7 +10,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 
 add_library(gridseeklib 
-    "grid.cpp"
+    "grid/grid.cpp"
     "entity/target.cpp"
     "map/forest_tile.cpp"
     "map/snow_tile.cpp"

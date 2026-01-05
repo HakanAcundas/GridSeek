@@ -7,8 +7,8 @@
 #include <queue>
 #include "../../shared/global_settings.hpp"
 #include "../error.hpp"
+#include "../grid/grid.hpp"
 #include "path_handler.hpp"
-#include "grid.hpp"
 
 enum struct Algorithm
 {

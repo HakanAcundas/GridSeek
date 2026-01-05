@@ -2,7 +2,7 @@
 
 #include "error.hpp"
 #include "input.hpp"
-#include "grid.hpp"
+#include "../grid/grid.hpp"
 #include "path_handler/path_handler.hpp"
 
 class Application
