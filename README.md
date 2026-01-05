@@ -35,7 +35,7 @@ The application uses a command binding system, where specific keys are mapped to
 
 ## Input System
 
-I used [Command](https://gameprogrammingpatterns.com/command.html) architecture for the input system. The reason is, why not? :) It is more scalable than a normal switch, if input statements. Additionally, the “game loop” becomes more readable.
+I used [Command](https://gameprogrammingpatterns.com/command.html) architecture for the input system. The reason is, why not? :) It is more scalable than a normal switch, if input statements. Additionally, the â€œgame loopâ€ becomes more readable.
 
 As you can see in [application run function](src/application/application.cpp):
 ```
@@ -44,4 +44,4 @@ Command* command = Input::get_instance().handle_input();
 			command->execute();
 ```
 
-We can handle all commands (including input commands and other commands) with only one if condition.
+Can handle all commands (including input commands and other commands) with only one if condition.
