@@ -1,6 +1,6 @@
 # GridSeek
 
-GridSeek is a small, CLI, grid (2D array) based path-finding project. It provides [Dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Pseudocode) and [A*](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithms for path finding.
+GridSeek is a small, CLI, and grid (2D array) based path-finding project. It provides [Dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Pseudocode) and [A*](https://en.wikipedia.org/wiki/A*_search_algorithm) algorithms for path finding.
 Each grid is represented by a [Tile](src/map/tile.hpp) class that has movements cost in it. The Tile can be either [ForestTile](src/map/forest_tile.hpp) or [SnowTile]((src/map/snow_tile.hpp)). Each subclass movement cost can be configured in [global settings](shared/global_settings.hpp).
 
 ## Build with CMake
